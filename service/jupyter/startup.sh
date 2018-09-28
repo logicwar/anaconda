@@ -31,10 +31,13 @@ if [ ! -f "/etc/initialbootpassed" ]; then
 	touch /etc/initialbootpassed
 
 	#########################################
-	##          DEPLOY MINECRAFT           ##
+	##            DEPLOY JUPYTER           ##
 	#########################################
 
-	exec /container/service/minecraft/deploy/deploy.sh
+	echo "[$(date +"%H:%M:%S")] [Container Setup]: Installing jupyter"
+	/opt/conda/bin/conda install jupyter -y --quiet
+	echo "[$(date +"%H:%M:%S")] [Container Setup]: Generating config file"
+	/sbin/setuser docker jupyter notebook --generate-config
 
 else
 	echo "[$(date +"%H:%M:%S")] [Container Setup]: -------> Standard boot"

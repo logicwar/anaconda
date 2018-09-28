@@ -18,13 +18,8 @@ LABEL maintainer="Logicwar <logicwar@gmail.com>"
 # Set default environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
     DUID=1001 DGID=1001 \
-    JVM_XX_OPTS="-XX:+UseG1GC" \
-    JVM_MIN_MEM="1024M" \
-    JVM_MAX_MEM="1024M" \
-    TYPE="VANILLA" \
-    VERSION="LATEST" \
-    FORGEVERSION="RECOMMENDED" \
-    EULA=""
+    LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+    PATH=/opt/conda/bin:$PATH
 
 #########################################
 ##          DOWNLOAD PACKAGES          ##
@@ -37,15 +32,32 @@ RUN \
  apt-get install --no-install-recommends -y \
 	wget \
 	curl \
-	jq \
+	bzip2 \
+	ca-certificates \
+	libglib2.0-0 \
+	libxext6 \
+	libsm6 \
+	libxrender1 \
 	unzip \
 	git && \
- echo "**** cleanup ****" && \
- apt-get clean && \
+ echo "**** Install cron service ****" && \
+ /container/tool/add-service-available :cron && \
  rm -rf \
 	/var/lib/apt/lists/* \	
 	/tmp/* \
 	/var/tmp/*
+
+# Download and install Main Software
+RUN \
+ echo "**** Install Anaconda3-5.2.0  ****" && \
+ wget --quiet https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh -O ~/anaconda.sh && \
+ /bin/bash ~/anaconda.sh -b -p /opt/conda && \
+ rm ~/anaconda.sh && \
+ ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+ echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+ echo "conda activate base" >> ~/.bashrc && \
+ echo "**** cleanup ****" && \
+ apt-get clean
 
 
 #########################################
@@ -65,6 +77,6 @@ RUN \
 ##         EXPORTS AND VOLUMES         ##
 #########################################
 
-EXPOSE 25565 25575
-VOLUME /opt/minecraft/data
+EXPOSE 8888
+VOLUME /mnt/data
 

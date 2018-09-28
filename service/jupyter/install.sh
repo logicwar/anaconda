@@ -5,19 +5,19 @@
 #########################################
 # Create files and directories folders
 mkdir -p \
-	/opt/minecraft/data \
-	/home/minecraft
+	/mnt/data/notebooks \
+	/home/docker
 
 #########################################
 ##          SET PERMISSIONS            ##
 #########################################
 # create a "docker" user
-useradd -U -d /home/minecraft docker
+useradd -U -d /home/docker docker
 
 # Set the permissions
 chown -R docker:docker \
-	/opt/minecraft/data \
-	/home/minecraft
+	/mnt/data/notebooks \
+	/home/docker
 
 # Ensure the docker user can export to container ENV
 chmod -R 757 /container/environment \
