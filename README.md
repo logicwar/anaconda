@@ -5,7 +5,7 @@
 
 # [Docker Container for Anaconda 5.2.0][hub]
 
-This is a Docker image based on osixia/light-baseimage for running  Anaconda 5.2.0. It start [jupyter][jupyter] and '*cron*' as services (which will restart after quiting or a crashing).
+This is a Docker image based on osixia/light-baseimage for running  Anaconda 5.2.0. It start [jupyter][jupyter] and '*cron*' as services (which will restart after quiting or a crash).
 
 With over 6 million users, the open source Anaconda Distribution is the fastest and easiest way to do Python and R data science and machine learning on Linux, Windows, and Mac OS X. It's the industry standard for developing, testing, and training on a single machine [Anaconda][anaconda].
 
@@ -65,6 +65,11 @@ For security reasons and to avoid permissions issues with data volumes (`-v` fla
 ```
 
 and finally specify your "docker" user `DUID` and group `DGID`. In this exemple `DUID=1001` and `DGID=1001`.
+
+### Logging in and setting a jupyter password
+
+* Login with the **token** (which can be found in the running console) and **set a password** (choice at the bottom of the login page) on : http://your_host:8888
+* Stop/restart the container to take into account the password (or just quit jupyter from interface as it will restart automatically)
 
 ## Sample of a simple docker-compose.yml
 ```
