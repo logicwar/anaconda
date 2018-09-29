@@ -18,8 +18,7 @@ LABEL maintainer="Logicwar <logicwar@gmail.com>"
 # Set default environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
     DUID=1001 DGID=1001 \
-    LANG=C.UTF-8 LC_ALL=C.UTF-8 \
-    PATH=/opt/conda/bin:$PATH
+    LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 #########################################
 ##          DOWNLOAD PACKAGES          ##

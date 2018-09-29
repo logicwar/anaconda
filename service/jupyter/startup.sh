@@ -34,10 +34,16 @@ if [ ! -f "/etc/initialbootpassed" ]; then
 	##            DEPLOY JUPYTER           ##
 	#########################################
 
-	echo "[$(date +"%H:%M:%S")] [Container Setup]: Installing jupyter"
-	/opt/conda/bin/conda install jupyter -y --quiet
-	echo "[$(date +"%H:%M:%S")] [Container Setup]: Generating config file"
-	/sbin/setuser docker jupyter notebook --generate-config
+	echo "[$(date +"%H:%M:%S")] [Container Setup]: Installing jupyter & nb_conda"
+	/opt/conda/bin/conda install jupyter nb_conda -y --quiet
+	# Generate jupyter config file
+	/sbin/setuser docker /opt/conda/bin/jupyter notebook --generate-config
+	# Fix nb_conda Directory error messagage
+	sed -i 's/for env in info\['\''envs'\''\]\]/for env in info\['\''envs'\''\] if env != info\['\''root_prefix'\''\]\]/g' /opt/conda/lib/python3.6/site-packages/nb_conda/envmanager.py
+	# Fix nb_conda permission issue"
+	echo "[$(date +"%H:%M:%S")] [Container Setup]: Fix permission issue with nb_conda and pkgs (may take some time)"
+	#chown -R docker:docker /opt/conda
+	chown -R docker:docker /opt/conda/pkgs
 
 else
 	echo "[$(date +"%H:%M:%S")] [Container Setup]: -------> Standard boot"

@@ -35,7 +35,7 @@ For server interaction you can attach by using :
 
 `docker attach anaconda` and then `Control-p` followed by `Control-q` to detach
 
-From an attached console type `stop` or press `Control-c` to stop the server.
+From an attached console press `Control-c` to stop the server.
 
 ### Data access
 If you are not using a 'persistent' volume but the auto-created volume, then you can determine it by using :
