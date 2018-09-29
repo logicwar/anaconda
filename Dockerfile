@@ -39,7 +39,8 @@ RUN \
 	libsm6 \
 	libxrender1 \
 	unzip \
-	git && \
+	git \
+	vim && \
  echo "**** Install cron service ****" && \
  /container/tool/add-service-available :cron && \
  rm -rf \
