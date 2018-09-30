@@ -71,12 +71,44 @@ and finally specify your "docker" user `DUID` and group `DGID`. In this exemple 
 * Login with the **token** (which can be found in the running console) and **set a password** (choice at the bottom of the login page) on : http://your_host:8888
 * Stop/restart the container to take into account the password (or just quit jupyter from interface as it will restart automatically)
 
+### Setup a cron job to run a python script
+
+With Conda environments you activate them by typing `source activate your_env_name` and deactivate them by typing `source deactivate`. Unfortunately this is not how you set it up to run via cron. You will need to find the path to the python that runs when you are in that particular environment.
+
+To avoid running the script as `root`, you should use the `docker` user.
+
+As `root` in a bash terminal to your container, run the following commands:
+
+```
+  $ (crontab -u docker -l ; echo "* * * * * /home/docker/.conda/envs/<your_env_name>/bin/python <your_python_script.py>") | crontab -u docker -
+  $ service cron reload
+```
+The above command will run the script every minutes.
+
+```
+ * * * * * *
+ | | | | | | 
+ | | | | | +-- Year              (range: 1900-3000)
+ | | | | +---- Day of the Week   (range: 1-7, 1 standing for Monday)
+ | | | +------ Month of the Year (range: 1-12)
+ | | +-------- Day of the Month  (range: 1-31)
+ | +---------- Hour              (range: 0-23)
+ +------------ Minute            (range: 0-59)
+```
+
+To remove your job:
+
+```
+  $ crontab -u docker -l | grep -v '<your_python_script.py>'  | crontab -u docker -
+  $ service cron reload
+```
+
 ## Sample of a simple docker-compose.yml
 ```
 version: "3"
 
 services:
-  anaconda:
+  anaconda1:
     image: logicwar/anaconda:latest
     volumes:
       - "/MyContainerPersistentMounts/Anaconda/Data:/mnt/data:rw"

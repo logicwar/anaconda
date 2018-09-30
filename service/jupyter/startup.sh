@@ -35,6 +35,7 @@ if [ ! -f "/etc/initialbootpassed" ]; then
 	#########################################
 
 	echo "[$(date +"%H:%M:%S")] [Container Setup]: Installing jupyter & nb_conda"
+	/sbin/setuser docker mkdir -p /mnt/data/notebooks
 	/opt/conda/bin/conda install jupyter nb_conda -y --quiet
 	# Generate jupyter config file
 	/sbin/setuser docker /opt/conda/bin/jupyter notebook --generate-config
@@ -44,6 +45,10 @@ if [ ! -f "/etc/initialbootpassed" ]; then
 	echo "[$(date +"%H:%M:%S")] [Container Setup]: Fix permission issue with nb_conda and pkgs (may take some time)"
 	#chown -R docker:docker /opt/conda
 	chown -R docker:docker /opt/conda/pkgs
+
+	#Allow docker user for cron
+	echo "docker" >> /etc/cron.allow
+	service cron reload
 
 else
 	echo "[$(date +"%H:%M:%S")] [Container Setup]: -------> Standard boot"

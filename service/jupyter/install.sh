@@ -5,7 +5,7 @@
 #########################################
 # Create files and directories folders
 mkdir -p \
-	/mnt/data/notebooks \
+	/mnt/data \
 	/home/docker
 
 #########################################
@@ -16,7 +16,7 @@ useradd -U -d /home/docker docker
 
 # Set the permissions
 chown -R docker:docker \
-	/mnt/data/notebooks \
+	/mnt/data \
 	/home/docker
 
 # Ensure the docker user can export to container ENV
